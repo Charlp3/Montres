@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Collection de montres</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      /* Palette assombrie, non éblouissante */
+      --bg-main: #e3e4e8;
+      --card-bg: #f4f4f6;
+      --accent: #546a8f;
+      --accent-soft: #d3d7e2;
+      --accent-soft-2: #e0e2ea;
+      --text-main: #23232b;
+      --text-muted: #6b6b77;
+      --danger: #b44a55;
+      --border-soft: #c1c3cf;
+      --row-even: #f1f1f4;
+      --row-odd: #e5e6ec;
+      --row-hover: #d7d8e2;
+      --input-bg: #fdfdfd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-weight: 600;
+      color: #1f2430;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 20px auto 24px;
+      padding: 0 16px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .app-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-title small {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(84, 106, 143, 0.18);
+      color: #232a3b;
+      font-size: 12px;
+      gap: 6px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 14px 14px 12px;
+      box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(120, 120, 135, 0.3);
+      border: 1px solid rgba(140, 141, 152, 0.5);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-header small {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .card-section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    /* Formulaire */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .field-group {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .field-group {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .field label {
+      color: var(--text-muted);
+    }
+
+    .field small {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      font-size: 13px;
+      outline: none;
+      background: var(--input-bg);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      width: 100%;
+      color: var(--text-main);
+    }
+
+    input[type="file"] {
+      font-size: 12px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(84, 106, 143, 0.35);
+      background: #f7f7fa;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .photos-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .photos-preview img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border-soft);
+      background: #d7d7dd;
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .actions-row small {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #f4f4f7;
+      box-shadow: 0 4px 10px rgba(36, 48, 72, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: #455572;
+    }
+
+    .btn-secondary {
+      background: var(--accent-soft-2);
+      color: #232a3b;
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-soft);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding-inline: 6px;
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(120, 120, 135, 0.18);
+    }
+
+    .btn-danger {
+      background: rgba(180, 74, 85, 0.12);
+      color: var(--danger);
+      box-shadow: none;
+    }
+
+    .btn-danger:hover {
+      background: rgba(180, 74, 85, 0.2);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft-2);
+      color: #23232b;
+    }
+
+    .pill span {
+      font-weight: 600;
+    }
+
+    .summary-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .summary-item {
+      background: var(--accent-soft-2);
+      color: var(--text-main);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-item strong {
+      font-weight: 600;
+    }
+
+    .summary-item.positive strong {
+      color: #19693b;
+    }
+
+    .summary-item.negative strong {
+      color: #8b1f28;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .filter-row select {
+      max-width: 180px;
+    }
+
+    .backup-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 8px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: #e0e1e7;
+      border: 1px solid #c1c3cf;
+    }
+
+    .backup-bar span {
+      color: var(--text-muted);
+    }
+
+    .backup-bar input[type="file"] {
+      display: none;
+    }
+
+    .counter-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #232a3b;
+      font-weight: 600;
+    }
+
+    /* Tableau */
+    .table-container {
+      margin-top: 6px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      background: #eeeff3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    thead {
+      background: #c6cad6;
+    }
+
+    th, td {
+      padding: 6px 7px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      font-weight: 600;
+      color: #1f2430;
+      border-bottom: 1px solid rgba(90, 92, 106, 0.6);
+      position: relative;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    th.sortable {
+      cursor: pointer;
+    }
+
+    th.sortable::after {
+      content: "⇅";
+      font-size: 10px;
+      opacity: 0.4;
+      margin-left: 4px;
+    }
+
+    th.sortable[data-sort-dir="asc"]::after {
+      content: "↑";
+      opacity: 0.9;
+    }
+
+    th.sortable[data-sort-dir="desc"]::after {
+      content: "↓";
+      opacity: 0.9;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: var(--row-odd);
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-even);
+    }
+
+    tbody tr:hover {
+      background: var(--row-hover);
+    }
+
+    td {
+      border-bottom: 1px solid rgba(120, 121, 135, 0.25);
+    }
+
+    td.actions {
+      white-space: nowrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(120, 121, 135, 0.18);
+      color: #1f2430;
+    }
+
+    .chip-type-montre {
+      background: rgba(84, 106, 143, 0.2);
+      color: #202739;
+    }
+
+    .chip-type-poche {
+      background: rgba(36, 143, 168, 0.2);
+      color: #124252;
+    }
+
+    .chip-type-horloge {
+      background: rgba(46, 125, 94, 0.22);
+      color: #123829;
+    }
+
+    .chip-type-officier {
+      background: rgba(176, 115, 52, 0.22);
+      color: #4c3014;
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    .no-data {
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: #eeeff3;
+    }
+
+    footer {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="app-title">
+        <h1>Collection de montres</h1>
+        <small>Montres, montres de poche, horloges et pendules d’officier.</small>
+      </div>
+      <div class="badge">
+        ⏱️ Gestion perso
+        <span class="counter-dot" id="totalCountDot">0</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Colonne formulaire -->
+      <section class="card" id="formCard">
+        <div class="card-header">
+          <div>
+            <h2 id="formTitle">Ajouter une pièce</h2>
+            <small id="formSubtitle">Renseigne les informations de base et les valeurs.</small>
+          </div>
+          <button type="button" class="btn-ghost" id="resetFormBtn" title="Réinitialiser le formulaire">
+            ↺ Formulaire
+          </button>
+        </div>
+
+        <form id="watchForm">
+          <div class="field-group">
+            <div class="field">
+              <label for="type">Type de pièce *</label>
+              <select id="type" required>
+                <option value="montre">Montre poignet</option>
+                <option value="montre_poche">Montre de poche</option>
+                <option value="horloge">Horloge</option>
+                <option value="pendule_officier">Pendule d’officier</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="brand">Marque</label>
+              <input type="text" id="brand" placeholder="Rolex, Omega, Longines..." />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="model">Modèle / Référence</label>
+              <input type="text" id="model" placeholder="Submariner, Calatrava..." />
+            </div>
+            <div class="field">
+              <label for="serial">N° de série (optionnel)</label>
+              <input type="text" id="serial" placeholder="Numéro, calibre, etc." />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="acquisitionDate">Date d’acquisition</label>
+              <input type="date" id="acquisitionDate" />
+            </div>
+            <div class="field">
+              <label for="acquisitionPlace">Lieu / Provenance</label>
+              <input type="text" id="acquisitionPlace" placeholder="Marché aux puces, vente, héritage..." />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="purchasePrice">Valeur d’achat</label>
+              <input type="number" id="purchasePrice" step="0.01" min="0" placeholder="0.00" />
+              <small>Devise : EUR</small>
+            </div>
+            <div class="field">
+              <label for="currentValue">Valeur actuelle</label>
+              <input type="number" id="currentValue" step="0.01" min="0" placeholder="0.00" />
+              <small>À la date ci-dessous</small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="currentValueDate">Date de valorisation</label>
+            <input type="date" id="currentValueDate" />
+          </div>
+
+          <div class="field">
+            <label for="photos">Photos (une ou plusieurs)</label>
+            <input type="file" id="photos" accept="image/*" multiple />
+            <small>Les photos restent uniquement sur cet appareil (stockage local).</small>
+            <div class="photos-preview" id="photosPreview"></div>
+          </div>
+
+          <div class="field">
+            <label for="notes">Notes</label>
+            <textarea id="notes" placeholder="État, complications, histoire, commentaires personnels..."></textarea>
+          </div>
+
+          <div class="actions-row">
+            <button type="submit" class="btn-primary" id="submitBtn">
+              💾 Enregistrer la pièce
+            </button>
+            <small>Les données sont aussi gardées dans ton navigateur.</small>
+          </div>
+        </form>
+      </section>
+
+      <!-- Colonne tableau -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Vue d’ensemble</h2>
+            <small>Tableau récapitulatif triable, couleurs sobres et zébrage.</small>
+          </div>
+          <div class="pill">
+            📊 <span id="totalCountLabel">0</span> pièces
+          </div>
+        </div>
+
+        <div class="card-section-title">Résumé rapide</div>
+        <div class="summary-bar">
+          <div class="summary-item">
+            Total achat : <strong id="sumPurchase">0.00 €</strong>
+          </div>
+          <div class="summary-item">
+            Valeur actuelle : <strong id="sumCurrent">0.00 €</strong>
+          </div>
+          <div class="summary-item" id="sumDeltaWrapper">
+            Écart : <strong id="sumDelta">0.00 €</strong>
+          </div>
+        </div>
+
+        <div class="backup-bar">
+          <span>💾 Sauvegarde manuelle :</span>
+          <button type="button" class="btn-secondary" id="exportBackupBtn">Exporter</button>
+          <button type="button" class="btn-secondary" id="importBackupBtn">Importer</button>
+          <input type="file" id="backupFileInput" accept="application/json" />
+        </div>
+
+        <div class="filter-row">
+          <span>Filtrer par type :</span>
+          <select id="filterType">
+            <option value="all">Tous les types</option>
+            <option value="montre">Montre poignet</option>
+            <option value="montre_poche">Montre de poche</option>
+            <option value="horloge">Horloge</option>
+            <option value="pendule_officier">Pendule d’officier</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table id="watchTable">
+            <thead>
+              <tr>
+                <th class="sortable" data-key="type">Type</th>
+                <th class="sortable" data-key="brand">Marque / Modèle</th>
+                <th class="sortable" data-key="acquisitionDate">Acquisition</th>
+                <th class="sortable" data-key="purchasePrice">Achat (€)</th>
+                <th class="sortable" data-key="currentValue">Valeur actuelle (€)</th>
+                <th class="sortable" data-key="currentValueDate">Date valeur</th>
+                <th class="sortable" data-key="photoCount">Photos</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="watchTableBody">
+              <!-- Lignes générées en JS -->
+            </tbody>
+          </table>
+          <div class="no-data" id="noDataMsg">
+            Aucune pièce pour l’instant. Ajoute ta première montre à gauche ✔️
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © 2025 – Collection de montres • v1.1
+    </footer>
+  </div>
+
+  <script>
+    // --- Données & stockage ---
+    const STORAGE_KEY = "watchCollectionV1";
+
+    let collection = [];
+    let filteredType = "all";
+    let currentSort = { key: null, dir: "asc" };
+    let editingId = null;
+    let tempPhotoDataUrls = []; // stocke les photos lues avant enregistrement
+
+    function loadFromStorage() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          collection = parsed;
+        }
+      } catch (e) {
+        console.error("Erreur de parsing localStorage", e);
+      }
+    }
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(collection));
+    }
+
+    function formatCurrency(value) {
+      if (value === null || value === undefined || value === "" || isNaN(value)) {
+        return "-";
+      }
+      const num = Number(value);
+      return num.toLocaleString("fr-FR", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      const parts = dateStr.split("-");
+      if (parts.length !== 3) return dateStr;
+      return `${parts[2]} / ${parts[1]} / ${parts[0]}`;
+    }
+
+    function typeLabel(type) {
+      switch (type) {
+        case "montre": return "Montre";
+        case "montre_poche": return "Montre de poche";
+        case "horloge": return "Horloge";
+        case "pendule_officier": return "Pendule d’officier";
+        case "autre": return "Autre";
+        default: return type || "-";
+      }
+    }
+
+    function typeChipClass(type) {
+      switch (type) {
+        case "montre": return "chip chip-type-montre";
+        case "montre_poche": return "chip chip-type-poche";
+        case "horloge": return "chip chip-type-horloge";
+        case "pendule_officier": return "chip chip-type-officier";
+        default: return "chip";
+      }
+    }
+
+    // --- Résumé ---
+    function renderSummary() {
+      const sumPurchase = collection.reduce((acc, item) => acc + (Number(item.purchasePrice) || 0), 0);
+      const sumCurrent = collection.reduce((acc, item) => acc + (Number(item.currentValue) || 0), 0);
+      const delta = sumCurrent - sumPurchase;
+
+      document.getElementById("sumPurchase").textContent = formatCurrency(sumPurchase);
+      document.getElementById("sumCurrent").textContent = formatCurrency(sumCurrent);
+
+      const formattedDelta = formatCurrency(Math.abs(delta));
+      document.getElementById("sumDelta").textContent =
+        (delta >= 0 ? "+" : "-") + " " + formattedDelta.replace("-", "");
+
+      const wrapper = document.getElementById("sumDeltaWrapper");
+      wrapper.classList.remove("positive", "negative");
+      if (delta > 0) wrapper.classList.add("positive");
+      else if (delta < 0) wrapper.classList.add("negative");
+
+      document.getElementById("totalCountLabel").textContent = collection.length;
+      document.getElementById("totalCountDot").textContent = collection.length;
+    }
+
+    function getFilteredCollection() {
+      if (filteredType === "all") return collection.slice();
+      return collection.filter(item => item.type === filteredType);
+    }
+
+    function sortCollection(list) {
+      if (!currentSort.key) return list;
+      const { key, dir } = currentSort;
+      const multiplier = dir === "asc" ? 1 : -1;
+
+      return list.sort((a, b) => {
+        if (key === "photoCount") {
+          const av = (a.photos || []).length;
+          const bv = (b.photos || []).length;
+          return (av - bv) * multiplier;
+        }
+
+        let av = a[key];
+        let bv = b[key];
+
+        // Dates
+        if (key === "acquisitionDate" || key === "currentValueDate") {
+          if (!av && !bv) return 0;
+          if (!av) return -1 * multiplier;
+          if (!bv) return 1 * multiplier;
+          return (av < bv ? -1 : av > bv ? 1 : 0) * multiplier;
+        }
+
+        // Numérique
+        const aNum = Number(av);
+        const bNum = Number(bv);
+        const bothNumeric = !isNaN(aNum) && !isNaN(bNum);
+        if (bothNumeric) {
+          return (aNum - bNum) * multiplier;
+        }
+
+        // Texte
+        av = (av || "").toString().toLowerCase();
+        bv = (bv || "").toString().toLowerCase();
+        if (av < bv) return -1 * multiplier;
+        if (av > bv) return 1 * multiplier;
+        return 0;
+      });
+    }
+
+    function clearSortIndicators() {
+      const ths = document.querySelectorAll("#watchTable thead th.sortable");
+      ths.forEach(th => th.removeAttribute("data-sort-dir"));
+    }
+
+    function updateSortIndicator() {
+      clearSortIndicators();
+      if (!currentSort.key) return;
+      const th = document.querySelector(
+        `#watchTable thead th.sortable[data-key="${currentSort.key}"]`
+      );
+      if (th) {
+        th.setAttribute("data-sort-dir", currentSort.dir);
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("watchTableBody");
+      const noDataMsg = document.getElementById("noDataMsg");
+      tbody.innerHTML = "";
+
+      const filtered = getFilteredCollection();
+      const sorted = sortCollection(filtered);
+
+      noDataMsg.style.display = sorted.length === 0 ? "block" : "none";
+
+      sorted.forEach(item => {
+        const tr = document.createElement("tr");
+
+        // Type
+        const tdType = document.createElement("td");
+        const spanType = document.createElement("span");
+        spanType.className = typeChipClass(item.type);
+        spanType.textContent = typeLabel(item.type);
+        tdType.appendChild(spanType);
+        tr.appendChild(tdType);
+
+        // Marque / modèle
+        const tdBrand = document.createElement("td");
+        const line1 = document.createElement("div");
+        line1.textContent = [item.brand, item.model].filter(Boolean).join(" • ") || "-";
+        const line2 = document.createElement("div");
+        line2.className = "muted";
+        line2.style.fontSize = "11px";
+        line2.textContent = item.serial ? `N° ${item.serial}` : "";
+        tdBrand.appendChild(line1);
+        if (line2.textContent) tdBrand.appendChild(line2);
+        tr.appendChild(tdBrand);
+
+        // Acquisition
+        const tdAcq = document.createElement("td");
+        const acqDate = document.createElement("div");
+        acqDate.textContent = formatDate(item.acquisitionDate);
+        const acqPlace = document.createElement("div");
+        acqPlace.className = "muted";
+        acqPlace.style.fontSize = "11px";
+        acqPlace.textContent = item.acquisitionPlace || "";
+        tdAcq.appendChild(acqDate);
+        if (acqPlace.textContent) tdAcq.appendChild(acqPlace);
+        tr.appendChild(tdAcq);
+
+        // Prix achat
+        const tdPurchase = document.createElement("td");
+        tdPurchase.textContent = formatCurrency(item.purchasePrice);
+        tr.appendChild(tdPurchase);
+
+        // Valeur actuelle
+        const tdCurrent = document.createElement("td");
+        tdCurrent.textContent = formatCurrency(item.currentValue);
+        tr.appendChild(tdCurrent);
+
+        // Date valeur
+        const tdValDate = document.createElement("td");
+        tdValDate.textContent = formatDate(item.currentValueDate);
+        tr.appendChild(tdValDate);
+
+        // Photos
+        const tdPhotos = document.createElement("td");
+        const count = (item.photos || []).length;
+        if (count > 0) {
+          const badge = document.createElement("span");
+          badge.className = "chip";
+          badge.textContent = `${count} photo${count > 1 ? "s" : ""}`;
+          tdPhotos.appendChild(badge);
+        } else {
+          tdPhotos.innerHTML = '<span class="muted">Aucune</span>';
+        }
+        tr.appendChild(tdPhotos);
+
+        // Notes
+        const tdNotes = document.createElement("td");
+        tdNotes.textContent = item.notes
+          ? (item.notes.length > 60 ? item.notes.slice(0, 57) + "..." : item.notes)
+          : "";
+        tr.appendChild(tdNotes);
+
+        // Actions
+        const tdActions = document.createElement("td");
+        tdActions.className = "actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-secondary";
+        editBtn.textContent = "✏️";
+        editBtn.title = "Modifier cette pièce";
+        editBtn.addEventListener("click", () => startEdit(item.id));
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn-danger";
+        delBtn.textContent = "🗑";
+        delBtn.title = "Supprimer cette pièce";
+        delBtn.addEventListener("click", () => deleteItem(item.id));
+
+        tdActions.appendChild(editBtn);
+        tdActions.appendChild(delBtn);
+
+        tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+
+      renderSummary();
+      updateSortIndicator();
+    }
+
+    // --- Formulaire ---
+    function resetForm(keepPhotosPreview = false) {
+      document.getElementById("watchForm").reset();
+      document.getElementById("type").value = "montre";
+      editingId = null;
+      document.getElementById("formTitle").textContent = "Ajouter une pièce";
+      document.getElementById("formSubtitle").textContent =
+        "Renseigne les informations de base et les valeurs.";
+      document.getElementById("submitBtn").textContent = "💾 Enregistrer la pièce";
+      if (!keepPhotosPreview) {
+        tempPhotoDataUrls = [];
+        document.getElementById("photosPreview").innerHTML = "";
+      }
+    }
+
+    function startEdit(id) {
+      const item = collection.find(i => i.id === id);
+      if (!item) return;
+      editingId = id;
+      document.getElementById("formTitle").textContent = "Modifier la pièce";
+      document.getElementById("formSubtitle").textContent =
+        "Modifie les informations puis enregistre ✔️";
+      document.getElementById("submitBtn").textContent = "✔️ Mettre à jour la pièce";
+
+      document.getElementById("type").value = item.type || "montre";
+      document.getElementById("brand").value = item.brand || "";
+      document.getElementById("model").value = item.model || "";
+      document.getElementById("serial").value = item.serial || "";
+      document.getElementById("acquisitionDate").value = item.acquisitionDate || "";
+      document.getElementById("acquisitionPlace").value = item.acquisitionPlace || "";
+      document.getElementById("purchasePrice").value =
+        item.purchasePrice !== null && item.purchasePrice !== undefined ? item.purchasePrice : "";
+      document.getElementById("currentValue").value =
+        item.currentValue !== null && item.currentValue !== undefined ? item.currentValue : "";
+      document.getElementById("currentValueDate").value = item.currentValueDate || "";
+      document.getElementById("notes").value = item.notes || "";
+
+      // Photos actuelles
+      const preview = document.getElementById("photosPreview");
+      preview.innerHTML = "";
+      (item.photos || []).forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        preview.appendChild(img);
+      });
+      tempPhotoDataUrls = (item.photos || []).slice();
+      document.getElementById("photos").value = "";
+
+      // Scroll vers le formulaire pour bien voir qu'on édite
+      const formCard = document.getElementById("formCard");
+      formCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function deleteItem(id) {
+      const item = collection.find(i => i.id === id);
+      const label = item
+        ? `${typeLabel(item.type)} ${item.brand || ""} ${item.model || ""}`.trim()
+        : "cette pièce";
+      if (!confirm(`Supprimer ${label} ?`)) return;
+      collection = collection.filter(i => i.id !== id);
+      saveToStorage();
+      renderTable();
+      if (editingId === id) {
+        resetForm();
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const type = document.getElementById("type").value;
+      const brand = document.getElementById("brand").value.trim();
+      const model = document.getElementById("model").value.trim();
+      const serial = document.getElementById("serial").value.trim();
+      const acquisitionDate = document.getElementById("acquisitionDate").value;
+      const acquisitionPlace = document.getElementById("acquisitionPlace").value.trim();
+      const purchasePriceRaw = document.getElementById("purchasePrice").value;
+      const currentValueRaw = document.getElementById("currentValue").value;
+      const currentValueDate = document.getElementById("currentValueDate").value;
+      const notes = document.getElementById("notes").value.trim();
+
+      const purchasePrice = purchasePriceRaw !== "" ? Number(purchasePriceRaw) : null;
+      const currentValue = currentValueRaw !== "" ? Number(currentValueRaw) : null;
+
+      const baseItem = {
+        type,
+        brand,
+        model,
+        serial,
+        acquisitionDate,
+        acquisitionPlace,
+        purchasePrice,
+        currentValue,
+        currentValueDate,
+        notes,
+        photos: tempPhotoDataUrls.slice()
+      };
+
+      if (editingId !== null) {
+        collection = collection.map(item => {
+          if (item.id === editingId) {
+            return { ...item, ...baseItem };
+          }
+          return item;
+        });
+      } else {
+        const newItem = {
+          id: Date.now(),
+          ...baseItem
+        };
+        collection.push(newItem);
+      }
+
+      saveToStorage();
+      renderTable();
+      resetForm();
+    }
+
+    // --- Photos ---
+    function handlePhotosChange(event) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+
+      let baseUrls = editingId !== null ? tempPhotoDataUrls.slice() : [];
+      let remaining = files.length;
+      const preview = document.getElementById("photosPreview");
+      preview.innerHTML = "";
+
+      // Anciennes photos si en édition
+      baseUrls.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        preview.appendChild(img);
+      });
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          baseUrls.push(e.target.result);
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          preview.appendChild(img);
+          remaining--;
+          if (remaining === 0) {
+            tempPhotoDataUrls = baseUrls;
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // --- Tri ---
+    function handleHeaderClick(event) {
+      const th = event.currentTarget;
+      const key = th.getAttribute("data-key");
+      if (!key) return;
+
+      if (currentSort.key === key) {
+        currentSort.dir = currentSort.dir === "asc" ? "desc" : "asc";
+      } else {
+        currentSort.key = key;
+        currentSort.dir = "asc";
+      }
+      renderTable();
+    }
+
+    // --- Filtre ---
+    function handleFilterChange(event) {
+      filteredType = event.target.value || "all";
+      renderTable();
+    }
+
+    // --- Sauvegarde : export / import ---
+    function exportBackup() {
+      const dataStr = JSON.stringify(collection, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `collection-montres-${yyyy}${mm}${dd}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function handleBackupFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const confirmMsg =
+        "Importer cette sauvegarde va remplacer la collection actuelle.\n\nContinuer ?";
+      if (!confirm(confirmMsg)) {
+        event.target.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!Array.isArray(parsed)) {
+            alert("Fichier invalide : format inattendu.");
+            return;
+          }
+
+          // On vérifie / nettoie un minimum les objets
+          const cleaned = parsed.map((item, index) => {
+            const base = typeof item === "object" && item !== null ? item : {};
+            return {
+              id: base.id || Date.now() + index,
+              type: base.type || "autre",
+              brand: base.brand || "",
+              model: base.model || "",
+              serial: base.serial || "",
+              acquisitionDate: base.acquisitionDate || "",
+              acquisitionPlace: base.acquisitionPlace || "",
+              purchasePrice:
+                base.purchasePrice !== undefined && base.purchasePrice !== null
+                  ? Number(base.purchasePrice)
+                  : null,
+              currentValue:
+                base.currentValue !== undefined && base.currentValue !== null
+                  ? Number(base.currentValue)
+                  : null,
+              currentValueDate: base.currentValueDate || "",
+              notes: base.notes || "",
+              photos: Array.isArray(base.photos) ? base.photos : []
+            };
+          });
+
+          collection = cleaned;
+          saveToStorage();
+          renderTable();
+          resetForm();
+          alert("Sauvegarde importée avec succès ✔️");
+        } catch (err) {
+          console.error("Erreur import sauvegarde", err);
+          alert("Impossible de lire cette sauvegarde (JSON invalide).");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    // --- Initialisation ---
+    document.addEventListener("DOMContentLoaded", () => {
+      loadFromStorage();
+      renderTable();
+
+      document.getElementById("watchForm").addEventListener("submit", handleFormSubmit);
+      document.getElementById("photos").addEventListener("change", handlePhotosChange);
+      document.getElementById("resetFormBtn").addEventListener("click", () => resetForm());
+
+      const sortableHeaders = document.querySelectorAll("#watchTable thead th.sortable");
+      sortableHeaders.forEach(th => th.addEventListener("click", handleHeaderClick));
+
+      document.getElementById("filterType").addEventListener("change", handleFilterChange);
+
+      // Boutons de sauvegarde
+      document
+        .getElementById("exportBackupBtn")
+        .addEventListener("click", exportBackup);
+
+      const backupInput = document.getElementById("backupFileInput");
+      document
+        .getElementById("importBackupBtn")
+        .addEventListener("click", () => backupInput.click());
+      backupInput.addEventListener("change", handleBackupFileSelected);
+    });
+  </script>
+</body>
+</html>
