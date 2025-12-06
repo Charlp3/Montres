@@ -373,12 +373,18 @@
 
     /* Tableau */
     .table-container {
-      margin-top: 6px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border-soft);
-      background: #eeeff3;
-    }
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: #eeeff3;
+
+  /* 🔥 Ajout indispensable pour mobile */
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  /* Pour éviter que le tableau coupe les bordures */
+  -webkit-overflow-scrolling: touch;
+}
 
     table {
       width: 100%;
