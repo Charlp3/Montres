@@ -475,18 +475,6 @@
       white-space: normal;
     }
 
-    /* Pastille Full set */
-    .fullset-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(84, 106, 143, 0.18);
-      color: #1f2430;
-    }
-
     .no-data {
       padding: 12px;
       text-align: center;
@@ -931,17 +919,17 @@
         tdValDate.textContent = formatDate(item.currentValueDate);
         tr.appendChild(tdValDate);
 
-        // Full set
-        const tdFullSet = document.createElement("td");
-        if (item.fullSet) {
-          const pill = document.createElement("span");
-          pill.className = "fullset-pill";
-          pill.textContent = "✔️ Full set";
-          tdFullSet.appendChild(pill);
-        } else {
-          tdFullSet.innerHTML = '<span class="muted">—</span>';
-        }
-        tr.appendChild(tdFullSet);
+        // Full set (✔️ uniquement)
+const tdFullSet = document.createElement("td");
+tdFullSet.style.textAlign = "center";
+
+if (item.fullSet) {
+  tdFullSet.textContent = "✔️";
+} else {
+  tdFullSet.innerHTML = '<span class="muted">—</span>';
+}
+
+tr.appendChild(tdFullSet);
 
         // Notes
         const tdNotes = document.createElement("td");
