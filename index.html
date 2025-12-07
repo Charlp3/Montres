@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      /* Palette assombrie, non éblouissante */
       --bg-main: #e3e4e8;
       --card-bg: #f4f4f6;
       --accent: #546a8f;
@@ -22,9 +21,7 @@
       --input-bg: #fdfdfd;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -39,10 +36,7 @@
       color: #1f2430;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    a { color: var(--accent); text-decoration: none; }
 
     .app {
       max-width: 1200px;
@@ -175,10 +169,6 @@
       color: var(--text-main);
     }
 
-    input[type="file"] {
-      font-size: 12px;
-    }
-
     input:focus,
     select:focus,
     textarea:focus {
@@ -190,22 +180,6 @@
     textarea {
       resize: vertical;
       min-height: 60px;
-    }
-
-    .photos-preview {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 5px;
-    }
-
-    .photos-preview img {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid var(--border-soft);
-      background: #d7d7dd;
     }
 
     .actions-row {
@@ -373,21 +347,18 @@
 
     /* Tableau */
     .table-container {
-  margin-top: 6px;
-  border-radius: 10px;
-  border: 1px solid var(--border-soft);
-  background: #eeeff3;
-
-  /* 🔥 Ajout indispensable pour mobile */
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  /* Pour éviter que le tableau coupe les bordures */
-  -webkit-overflow-scrolling: touch;
-}
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      background: #eeeff3;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
 
     table {
       width: 100%;
+      min-width: 950px; /* permet le scroll horizontal si l'écran est trop étroit */
       border-collapse: collapse;
       font-size: 12px;
     }
@@ -484,6 +455,12 @@
 
     .muted {
       color: var(--text-muted);
+    }
+
+    /* Colonne Notes élargie */
+    td.notes-col, th.notes-col {
+      min-width: 260px;
+      white-space: normal;
     }
 
     .no-data {
@@ -588,13 +565,6 @@
           </div>
 
           <div class="field">
-            <label for="photos">Photos (une ou plusieurs)</label>
-            <input type="file" id="photos" accept="image/*" multiple />
-            <small>Les photos restent uniquement sur cet appareil (stockage local).</small>
-            <div class="photos-preview" id="photosPreview"></div>
-          </div>
-
-          <div class="field">
             <label for="notes">Notes</label>
             <textarea id="notes" placeholder="État, complications, histoire, commentaires personnels..."></textarea>
           </div>
@@ -662,8 +632,7 @@
                 <th class="sortable" data-key="purchasePrice">Achat (€)</th>
                 <th class="sortable" data-key="currentValue">Valeur actuelle (€)</th>
                 <th class="sortable" data-key="currentValueDate">Date valeur</th>
-                <th class="sortable" data-key="photoCount">Photos</th>
-                <th>Notes</th>
+                <th class="notes-col">Notes</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -679,19 +648,17 @@
     </div>
 
     <footer>
-      © 2025 – Collection de montres • v1.1
+      © 2025 – Collection de montres • v1.3
     </footer>
   </div>
 
   <script>
-    // --- Données & stockage ---
     const STORAGE_KEY = "watchCollectionV1";
 
     let collection = [];
     let filteredType = "all";
     let currentSort = { key: null, dir: "asc" };
     let editingId = null;
-    let tempPhotoDataUrls = []; // stocke les photos lues avant enregistrement
 
     function loadFromStorage() {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -711,9 +678,7 @@
     }
 
     function formatCurrency(value) {
-      if (value === null || value === undefined || value === "" || isNaN(value)) {
-        return "-";
-      }
+      if (value === null || value === undefined || value === "" || isNaN(value)) return "-";
       const num = Number(value);
       return num.toLocaleString("fr-FR", {
         style: "currency",
@@ -750,10 +715,15 @@
       }
     }
 
-    // --- Résumé ---
     function renderSummary() {
-      const sumPurchase = collection.reduce((acc, item) => acc + (Number(item.purchasePrice) || 0), 0);
-      const sumCurrent = collection.reduce((acc, item) => acc + (Number(item.currentValue) || 0), 0);
+      const sumPurchase = collection.reduce(
+        (acc, item) => acc + (Number(item.purchasePrice) || 0),
+        0
+      );
+      const sumCurrent = collection.reduce(
+        (acc, item) => acc + (Number(item.currentValue) || 0),
+        0
+      );
       const delta = sumCurrent - sumPurchase;
 
       document.getElementById("sumPurchase").textContent = formatCurrency(sumPurchase);
@@ -783,16 +753,9 @@
       const multiplier = dir === "asc" ? 1 : -1;
 
       return list.sort((a, b) => {
-        if (key === "photoCount") {
-          const av = (a.photos || []).length;
-          const bv = (b.photos || []).length;
-          return (av - bv) * multiplier;
-        }
-
         let av = a[key];
         let bv = b[key];
 
-        // Dates
         if (key === "acquisitionDate" || key === "currentValueDate") {
           if (!av && !bv) return 0;
           if (!av) return -1 * multiplier;
@@ -800,15 +763,11 @@
           return (av < bv ? -1 : av > bv ? 1 : 0) * multiplier;
         }
 
-        // Numérique
         const aNum = Number(av);
         const bNum = Number(bv);
         const bothNumeric = !isNaN(aNum) && !isNaN(bNum);
-        if (bothNumeric) {
-          return (aNum - bNum) * multiplier;
-        }
+        if (bothNumeric) return (aNum - bNum) * multiplier;
 
-        // Texte
         av = (av || "").toString().toLowerCase();
         bv = (bv || "").toString().toLowerCase();
         if (av < bv) return -1 * multiplier;
@@ -828,9 +787,7 @@
       const th = document.querySelector(
         `#watchTable thead th.sortable[data-key="${currentSort.key}"]`
       );
-      if (th) {
-        th.setAttribute("data-sort-dir", currentSort.dir);
-      }
+      if (th) th.setAttribute("data-sort-dir", currentSort.dir);
     }
 
     function renderTable() {
@@ -893,24 +850,10 @@
         tdValDate.textContent = formatDate(item.currentValueDate);
         tr.appendChild(tdValDate);
 
-        // Photos
-        const tdPhotos = document.createElement("td");
-        const count = (item.photos || []).length;
-        if (count > 0) {
-          const badge = document.createElement("span");
-          badge.className = "chip";
-          badge.textContent = `${count} photo${count > 1 ? "s" : ""}`;
-          tdPhotos.appendChild(badge);
-        } else {
-          tdPhotos.innerHTML = '<span class="muted">Aucune</span>';
-        }
-        tr.appendChild(tdPhotos);
-
         // Notes
         const tdNotes = document.createElement("td");
-        tdNotes.textContent = item.notes
-          ? (item.notes.length > 60 ? item.notes.slice(0, 57) + "..." : item.notes)
-          : "";
+        tdNotes.className = "notes-col";
+        tdNotes.textContent = item.notes || "";
         tr.appendChild(tdNotes);
 
         // Actions
@@ -942,8 +885,7 @@
       updateSortIndicator();
     }
 
-    // --- Formulaire ---
-    function resetForm(keepPhotosPreview = false) {
+    function resetForm() {
       document.getElementById("watchForm").reset();
       document.getElementById("type").value = "montre";
       editingId = null;
@@ -951,16 +893,13 @@
       document.getElementById("formSubtitle").textContent =
         "Renseigne les informations de base et les valeurs.";
       document.getElementById("submitBtn").textContent = "💾 Enregistrer la pièce";
-      if (!keepPhotosPreview) {
-        tempPhotoDataUrls = [];
-        document.getElementById("photosPreview").innerHTML = "";
-      }
     }
 
     function startEdit(id) {
       const item = collection.find(i => i.id === id);
       if (!item) return;
       editingId = id;
+
       document.getElementById("formTitle").textContent = "Modifier la pièce";
       document.getElementById("formSubtitle").textContent =
         "Modifie les informations puis enregistre ✔️";
@@ -973,26 +912,20 @@
       document.getElementById("acquisitionDate").value = item.acquisitionDate || "";
       document.getElementById("acquisitionPlace").value = item.acquisitionPlace || "";
       document.getElementById("purchasePrice").value =
-        item.purchasePrice !== null && item.purchasePrice !== undefined ? item.purchasePrice : "";
+        item.purchasePrice !== null && item.purchasePrice !== undefined
+          ? item.purchasePrice
+          : "";
       document.getElementById("currentValue").value =
-        item.currentValue !== null && item.currentValue !== undefined ? item.currentValue : "";
+        item.currentValue !== null && item.currentValue !== undefined
+          ? item.currentValue
+          : "";
       document.getElementById("currentValueDate").value = item.currentValueDate || "";
       document.getElementById("notes").value = item.notes || "";
 
-      // Photos actuelles
-      const preview = document.getElementById("photosPreview");
-      preview.innerHTML = "";
-      (item.photos || []).forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        preview.appendChild(img);
+      document.getElementById("formCard").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
-      tempPhotoDataUrls = (item.photos || []).slice();
-      document.getElementById("photos").value = "";
-
-      // Scroll vers le formulaire pour bien voir qu'on édite
-      const formCard = document.getElementById("formCard");
-      formCard.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function deleteItem(id) {
@@ -1004,9 +937,7 @@
       collection = collection.filter(i => i.id !== id);
       saveToStorage();
       renderTable();
-      if (editingId === id) {
-        resetForm();
-      }
+      if (editingId === id) resetForm();
     }
 
     function handleFormSubmit(event) {
@@ -1035,17 +966,11 @@
         purchasePrice,
         currentValue,
         currentValueDate,
-        notes,
-        photos: tempPhotoDataUrls.slice()
+        notes
       };
 
       if (editingId !== null) {
-        collection = collection.map(item => {
-          if (item.id === editingId) {
-            return { ...item, ...baseItem };
-          }
-          return item;
-        });
+        collection = collection.map(item => (item.id === editingId ? { ...item, ...baseItem } : item));
       } else {
         const newItem = {
           id: Date.now(),
@@ -1059,40 +984,6 @@
       resetForm();
     }
 
-    // --- Photos ---
-    function handlePhotosChange(event) {
-      const files = Array.from(event.target.files || []);
-      if (files.length === 0) return;
-
-      let baseUrls = editingId !== null ? tempPhotoDataUrls.slice() : [];
-      let remaining = files.length;
-      const preview = document.getElementById("photosPreview");
-      preview.innerHTML = "";
-
-      // Anciennes photos si en édition
-      baseUrls.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        preview.appendChild(img);
-      });
-
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = e => {
-          baseUrls.push(e.target.result);
-          const img = document.createElement("img");
-          img.src = e.target.result;
-          preview.appendChild(img);
-          remaining--;
-          if (remaining === 0) {
-            tempPhotoDataUrls = baseUrls;
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // --- Tri ---
     function handleHeaderClick(event) {
       const th = event.currentTarget;
       const key = th.getAttribute("data-key");
@@ -1107,13 +998,11 @@
       renderTable();
     }
 
-    // --- Filtre ---
     function handleFilterChange(event) {
       filteredType = event.target.value || "all";
       renderTable();
     }
 
-    // --- Sauvegarde : export / import ---
     function exportBackup() {
       const dataStr = JSON.stringify(collection, null, 2);
       const blob = new Blob([dataStr], { type: "application/json" });
@@ -1153,7 +1042,6 @@
             return;
           }
 
-          // On vérifie / nettoie un minimum les objets
           const cleaned = parsed.map((item, index) => {
             const base = typeof item === "object" && item !== null ? item : {};
             return {
@@ -1173,8 +1061,7 @@
                   ? Number(base.currentValue)
                   : null,
               currentValueDate: base.currentValueDate || "",
-              notes: base.notes || "",
-              photos: Array.isArray(base.photos) ? base.photos : []
+              notes: base.notes || ""
             };
           });
 
@@ -1193,24 +1080,19 @@
       reader.readAsText(file, "utf-8");
     }
 
-    // --- Initialisation ---
     document.addEventListener("DOMContentLoaded", () => {
       loadFromStorage();
       renderTable();
 
       document.getElementById("watchForm").addEventListener("submit", handleFormSubmit);
-      document.getElementById("photos").addEventListener("change", handlePhotosChange);
-      document.getElementById("resetFormBtn").addEventListener("click", () => resetForm());
+      document.getElementById("resetFormBtn").addEventListener("click", resetForm);
 
       const sortableHeaders = document.querySelectorAll("#watchTable thead th.sortable");
       sortableHeaders.forEach(th => th.addEventListener("click", handleHeaderClick));
 
       document.getElementById("filterType").addEventListener("change", handleFilterChange);
 
-      // Boutons de sauvegarde
-      document
-        .getElementById("exportBackupBtn")
-        .addEventListener("click", exportBackup);
+      document.getElementById("exportBackupBtn").addEventListener("click", exportBackup);
 
       const backupInput = document.getElementById("backupFileInput");
       document
