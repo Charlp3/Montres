@@ -182,6 +182,18 @@
       min-height: 60px;
     }
 
+    .checkbox-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .checkbox-inline input {
+      width: auto;
+    }
+
     .actions-row {
       display: flex;
       justify-content: space-between;
@@ -358,7 +370,7 @@
 
     table {
       width: 100%;
-      min-width: 950px; /* permet le scroll horizontal si l'écran est trop étroit */
+      min-width: 1100px;
       border-collapse: collapse;
       font-size: 12px;
     }
@@ -463,6 +475,18 @@
       white-space: normal;
     }
 
+    /* Pastille Full set */
+    .fullset-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(84, 106, 143, 0.18);
+      color: #1f2430;
+    }
+
     .no-data {
       padding: 12px;
       text-align: center;
@@ -537,31 +561,44 @@
 
           <div class="field-group">
             <div class="field">
-              <label for="acquisitionDate">Date d’acquisition</label>
-              <input type="date" id="acquisitionDate" />
+              <label for="epochYear">Époque (année de la montre)</label>
+              <input type="number" id="epochYear" min="1800" max="2100" step="1" placeholder="1968" />
             </div>
             <div class="field">
-              <label for="acquisitionPlace">Lieu / Provenance</label>
-              <input type="text" id="acquisitionPlace" placeholder="Marché aux puces, vente, héritage..." />
+              <label for="acquisitionYear">Année d’acquisition</label>
+              <input type="number" id="acquisitionYear" min="1800" max="2100" step="1" placeholder="2014" />
             </div>
           </div>
 
           <div class="field-group">
             <div class="field">
+              <label for="acquisitionPlace">Lieu / Provenance</label>
+              <input type="text" id="acquisitionPlace" placeholder="Marché, vente, héritage..." />
+            </div>
+            <div class="field">
               <label for="purchasePrice">Valeur d’achat</label>
               <input type="number" id="purchasePrice" step="0.01" min="0" placeholder="0.00" />
               <small>Devise : EUR</small>
             </div>
+          </div>
+
+          <div class="field-group">
             <div class="field">
               <label for="currentValue">Valeur actuelle</label>
               <input type="number" id="currentValue" step="0.01" min="0" placeholder="0.00" />
               <small>À la date ci-dessous</small>
             </div>
+            <div class="field">
+              <label for="currentValueDate">Date de valorisation</label>
+              <input type="date" id="currentValueDate" />
+            </div>
           </div>
 
           <div class="field">
-            <label for="currentValueDate">Date de valorisation</label>
-            <input type="date" id="currentValueDate" />
+            <label class="checkbox-inline">
+              <input type="checkbox" id="fullSet" />
+              Full set (boîte, papiers, accessoires)
+            </label>
           </div>
 
           <div class="field">
@@ -583,7 +620,7 @@
         <div class="card-header">
           <div>
             <h2>Vue d’ensemble</h2>
-            <small>Tableau récapitulatif triable, couleurs sobres et zébrage.</small>
+            <small>Tableau triable, couleurs sobres et zébrage.</small>
           </div>
           <div class="pill">
             📊 <span id="totalCountLabel">0</span> pièces
@@ -628,10 +665,12 @@
               <tr>
                 <th class="sortable" data-key="type">Type</th>
                 <th class="sortable" data-key="brand">Marque / Modèle</th>
-                <th class="sortable" data-key="acquisitionDate">Acquisition</th>
+                <th class="sortable" data-key="epochYear">Époque</th>
+                <th class="sortable" data-key="acquisitionYear">Acquisition</th>
                 <th class="sortable" data-key="purchasePrice">Achat (€)</th>
                 <th class="sortable" data-key="currentValue">Valeur actuelle (€)</th>
                 <th class="sortable" data-key="currentValueDate">Date valeur</th>
+                <th class="sortable" data-key="fullSet">Full set</th>
                 <th class="notes-col">Notes</th>
                 <th>Actions</th>
               </tr>
@@ -648,7 +687,7 @@
     </div>
 
     <footer>
-      © 2025 – Collection de montres • v1.3
+      © 2025 – Pierre Charlier – Collection de montres • v1.5
     </footer>
   </div>
 
@@ -666,7 +705,39 @@
       try {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          collection = parsed;
+          // Normalisation / migration des anciens formats
+          collection = parsed.map((item, index) => {
+            const base = typeof item === "object" && item !== null ? item : {};
+            // Migration ancienne date d'acquisition -> année
+            let acquisitionYear = base.acquisitionYear;
+            if (!acquisitionYear && base.acquisitionDate) {
+              const yearFromDate = String(base.acquisitionDate).slice(0, 4);
+              if (/^\d{4}$/.test(yearFromDate)) {
+                acquisitionYear = yearFromDate;
+              }
+            }
+            return {
+              id: base.id || Date.now() + index,
+              type: base.type || "autre",
+              brand: base.brand || "",
+              model: base.model || "",
+              serial: base.serial || "",
+              epochYear: base.epochYear || "",
+              acquisitionYear: acquisitionYear || "",
+              acquisitionPlace: base.acquisitionPlace || "",
+              purchasePrice:
+                base.purchasePrice !== undefined && base.purchasePrice !== null
+                  ? Number(base.purchasePrice)
+                  : null,
+              currentValue:
+                base.currentValue !== undefined && base.currentValue !== null
+                  ? Number(base.currentValue)
+                  : null,
+              currentValueDate: base.currentValueDate || "",
+              fullSet: !!base.fullSet,
+              notes: base.notes || ""
+            };
+          });
         }
       } catch (e) {
         console.error("Erreur de parsing localStorage", e);
@@ -756,18 +827,30 @@
         let av = a[key];
         let bv = b[key];
 
-        if (key === "acquisitionDate" || key === "currentValueDate") {
+        // Date (currentValueDate)
+        if (key === "currentValueDate") {
           if (!av && !bv) return 0;
           if (!av) return -1 * multiplier;
           if (!bv) return 1 * multiplier;
           return (av < bv ? -1 : av > bv ? 1 : 0) * multiplier;
         }
 
+        // Booléen fullSet
+        if (key === "fullSet") {
+          const aVal = a.fullSet ? 1 : 0;
+          const bVal = b.fullSet ? 1 : 0;
+          return (aVal - bVal) * multiplier;
+        }
+
+        // Numérique (années, prix, etc.)
         const aNum = Number(av);
         const bNum = Number(bv);
-        const bothNumeric = !isNaN(aNum) && !isNaN(bNum);
-        if (bothNumeric) return (aNum - bNum) * multiplier;
+        const bothNumeric = !isNaN(aNum) && !isNaN(bNum) && av !== "" && bv !== "";
+        if (bothNumeric) {
+          return (aNum - bNum) * multiplier;
+        }
 
+        // Texte
         av = (av || "").toString().toLowerCase();
         bv = (bv || "").toString().toLowerCase();
         if (av < bv) return -1 * multiplier;
@@ -823,17 +906,15 @@
         if (line2.textContent) tdBrand.appendChild(line2);
         tr.appendChild(tdBrand);
 
-        // Acquisition
-        const tdAcq = document.createElement("td");
-        const acqDate = document.createElement("div");
-        acqDate.textContent = formatDate(item.acquisitionDate);
-        const acqPlace = document.createElement("div");
-        acqPlace.className = "muted";
-        acqPlace.style.fontSize = "11px";
-        acqPlace.textContent = item.acquisitionPlace || "";
-        tdAcq.appendChild(acqDate);
-        if (acqPlace.textContent) tdAcq.appendChild(acqPlace);
-        tr.appendChild(tdAcq);
+        // Époque
+        const tdEpoch = document.createElement("td");
+        tdEpoch.textContent = item.epochYear || "-";
+        tr.appendChild(tdEpoch);
+
+        // Année acquisition
+        const tdAcqYear = document.createElement("td");
+        tdAcqYear.textContent = item.acquisitionYear || "-";
+        tr.appendChild(tdAcqYear);
 
         // Prix achat
         const tdPurchase = document.createElement("td");
@@ -849,6 +930,18 @@
         const tdValDate = document.createElement("td");
         tdValDate.textContent = formatDate(item.currentValueDate);
         tr.appendChild(tdValDate);
+
+        // Full set
+        const tdFullSet = document.createElement("td");
+        if (item.fullSet) {
+          const pill = document.createElement("span");
+          pill.className = "fullset-pill";
+          pill.textContent = "✔️ Full set";
+          tdFullSet.appendChild(pill);
+        } else {
+          tdFullSet.innerHTML = '<span class="muted">—</span>';
+        }
+        tr.appendChild(tdFullSet);
 
         // Notes
         const tdNotes = document.createElement("td");
@@ -909,7 +1002,8 @@
       document.getElementById("brand").value = item.brand || "";
       document.getElementById("model").value = item.model || "";
       document.getElementById("serial").value = item.serial || "";
-      document.getElementById("acquisitionDate").value = item.acquisitionDate || "";
+      document.getElementById("epochYear").value = item.epochYear || "";
+      document.getElementById("acquisitionYear").value = item.acquisitionYear || "";
       document.getElementById("acquisitionPlace").value = item.acquisitionPlace || "";
       document.getElementById("purchasePrice").value =
         item.purchasePrice !== null && item.purchasePrice !== undefined
@@ -920,6 +1014,7 @@
           ? item.currentValue
           : "";
       document.getElementById("currentValueDate").value = item.currentValueDate || "";
+      document.getElementById("fullSet").checked = !!item.fullSet;
       document.getElementById("notes").value = item.notes || "";
 
       document.getElementById("formCard").scrollIntoView({
@@ -946,13 +1041,17 @@
       const brand = document.getElementById("brand").value.trim();
       const model = document.getElementById("model").value.trim();
       const serial = document.getElementById("serial").value.trim();
-      const acquisitionDate = document.getElementById("acquisitionDate").value;
+      const epochYearRaw = document.getElementById("epochYear").value;
+      const acquisitionYearRaw = document.getElementById("acquisitionYear").value;
       const acquisitionPlace = document.getElementById("acquisitionPlace").value.trim();
       const purchasePriceRaw = document.getElementById("purchasePrice").value;
       const currentValueRaw = document.getElementById("currentValue").value;
       const currentValueDate = document.getElementById("currentValueDate").value;
+      const fullSet = document.getElementById("fullSet").checked;
       const notes = document.getElementById("notes").value.trim();
 
+      const epochYear = epochYearRaw !== "" ? String(epochYearRaw) : "";
+      const acquisitionYear = acquisitionYearRaw !== "" ? String(acquisitionYearRaw) : "";
       const purchasePrice = purchasePriceRaw !== "" ? Number(purchasePriceRaw) : null;
       const currentValue = currentValueRaw !== "" ? Number(currentValueRaw) : null;
 
@@ -961,11 +1060,13 @@
         brand,
         model,
         serial,
-        acquisitionDate,
+        epochYear,
+        acquisitionYear,
         acquisitionPlace,
         purchasePrice,
         currentValue,
         currentValueDate,
+        fullSet,
         notes
       };
 
@@ -1044,13 +1145,23 @@
 
           const cleaned = parsed.map((item, index) => {
             const base = typeof item === "object" && item !== null ? item : {};
+
+            let acquisitionYear = base.acquisitionYear;
+            if (!acquisitionYear && base.acquisitionDate) {
+              const yearFromDate = String(base.acquisitionDate).slice(0, 4);
+              if (/^\d{4}$/.test(yearFromDate)) {
+                acquisitionYear = yearFromDate;
+              }
+            }
+
             return {
               id: base.id || Date.now() + index,
               type: base.type || "autre",
               brand: base.brand || "",
               model: base.model || "",
               serial: base.serial || "",
-              acquisitionDate: base.acquisitionDate || "",
+              epochYear: base.epochYear || "",
+              acquisitionYear: acquisitionYear || "",
               acquisitionPlace: base.acquisitionPlace || "",
               purchasePrice:
                 base.purchasePrice !== undefined && base.purchasePrice !== null
@@ -1061,6 +1172,7 @@
                   ? Number(base.currentValue)
                   : null,
               currentValueDate: base.currentValueDate || "",
+              fullSet: !!base.fullSet,
               notes: base.notes || ""
             };
           });
