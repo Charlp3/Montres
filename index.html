@@ -470,6 +470,12 @@
       color: #3e2e18;
     }
 
+.chip-type-autre {
+  background: rgba(255, 182, 193, 0.85); /* rose clair */
+  color: #4a2c34; /* texte prune foncé lisible */
+  border: 1px solid rgba(190, 120, 140, 0.9);
+}
+
     .muted {
       color: var(--text-muted);
     }
@@ -773,7 +779,7 @@
         case "montre_poche": return "chip chip-type-poche";
         case "horloge": return "chip chip-type-horloge";
         case "pendule_officier": return "chip chip-type-officier";
-        default: return "chip";
+        default: return "chip chip-type-autre";
       }
     }
 
