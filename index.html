@@ -465,7 +465,7 @@
       color: #342b20;
     }
 
-    .chip-type-voyage {
+    .chip-type-officier {
       background: rgba(210, 182, 141, 0.9);
       color: #3e2e18;
     }
@@ -501,7 +501,7 @@
     <header class="app-header">
       <div class="app-title">
         <h1>Collection de montres</h1>
-        <small>Montres, montres de poche, horloges et pendules de voyage.</small>
+        <small>Montres, montres de poche, horloges et pendules d’officier.</small>
       </div>
       <div class="badge">
         ⏱️ Gestion perso
@@ -530,7 +530,7 @@
                 <option value="montre">Montre poignet</option>
                 <option value="montre_poche">Montre de poche</option>
                 <option value="horloge">Horloge</option>
-                <option value="pendule_voyage">Pendule de voyage</option>
+                <option value="pendule_officier">Pendule d’officier</option>
                 <option value="autre">Autre</option>
               </select>
             </div>
@@ -647,7 +647,7 @@
             <option value="montre">Montre poignet</option>
             <option value="montre_poche">Montre de poche</option>
             <option value="horloge">Horloge</option>
-            <option value="pendule_voyage">Pendule de voyage</option>
+            <option value="pendule_officier">Pendule d’officier</option>
             <option value="autre">Autre</option>
           </select>
         </div>
@@ -680,7 +680,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v1.7
+      © 2025 – Pierre Charlier – Collection de montres • v1.6
     </footer>
   </div>
 
@@ -761,7 +761,7 @@
         case "montre": return "Montre";
         case "montre_poche": return "Montre de poche";
         case "horloge": return "Horloge";
-        case "pendule_voyage": return "Pendule de voyage";
+        case "pendule_officier": return "Pendule d’officier";
         case "autre": return "Autre";
         default: return type || "-";
       }
@@ -772,7 +772,7 @@
         case "montre": return "chip chip-type-montre";
         case "montre_poche": return "chip chip-type-poche";
         case "horloge": return "chip chip-type-horloge";
-        case "pendule_voyage": return "chip chip-type-voyage";
+        case "pendule_officier": return "chip chip-type-officier";
         default: return "chip";
       }
     }
