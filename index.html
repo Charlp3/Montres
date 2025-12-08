@@ -6,20 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg-main: #e3e4e8;
-      --card-bg: #f4f4f6;
-      --accent: #546a8f;
-      --accent-soft: #d3d7e2;
-      --accent-soft-2: #e0e2ea;
-      --text-main: #23232b;
-      --text-muted: #6b6b77;
-      --danger: #b44a55;
-      --border-soft: #c1c3cf;
-      --row-even: #f1f1f4;
-      --row-odd: #e5e6ec;
-      --row-hover: #d7d8e2;
-      --input-bg: #fdfdfd;
-    }
+  --bg-main: #e8dfd1;        /* beige soutenu */
+  --card-bg: #f6f1e7;        /* crème contrasté */
+  --accent: #6b6153;         /* brun-gris foncé (style Birthday) */
+  --accent-soft: #d1c5b7;    /* beige brun clair */
+  --accent-soft-2: #c7baaa;  /* beige grisé */
+  --text-main: #2c2a27;      /* gris-brun presque noir */
+  --text-muted: #6a645c;     /* gris-brun doux */
+  --danger: #944444;         /* rouge plus lisible */
+  --border-soft: #b7aa99;    /* brun clair contrasté */
+
+  --row-even: #f2ebe0;       /* zébrage clair */
+  --row-odd: #e0d5c6;        /* zébrage foncé */
+  --row-hover: #d6cabb;      /* survol plus visible */
+
+  --input-bg: #fdfbf8;       /* crème lisible */
+}
 
     * { box-sizing: border-box; }
 
@@ -33,7 +35,7 @@
     h1, h2, h3 {
       margin: 0;
       font-weight: 600;
-      color: #1f2430;
+      color: #3b372f;
     }
 
     a { color: var(--accent); text-decoration: none; }
@@ -68,10 +70,11 @@
       align-items: center;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(84, 106, 143, 0.18);
-      color: #232a3b;
+      background: rgba(145, 129, 104, 0.16);
+      color: #4a4339;
       font-size: 12px;
       gap: 6px;
+      border: 1px solid rgba(170, 154, 130, 0.5);
     }
 
     .layout {
@@ -92,9 +95,9 @@
       border-radius: 10px;
       padding: 14px 14px 12px;
       box-shadow:
-        0 6px 14px rgba(0, 0, 0, 0.08),
-        0 0 0 1px rgba(120, 120, 135, 0.3);
-      border: 1px solid rgba(140, 141, 152, 0.5);
+        0 6px 14px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(189, 173, 149, 0.6);
+      border: 1px solid rgba(198, 183, 160, 0.9);
     }
 
     .card-header {
@@ -173,8 +176,8 @@
     select:focus,
     textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(84, 106, 143, 0.35);
-      background: #f7f7fa;
+      box-shadow: 0 0 0 1px rgba(117, 107, 94, 0.45);
+      background: #fffaf1;
     }
 
     textarea {
@@ -225,23 +228,22 @@
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #f4f4f7;
-      box-shadow: 0 4px 10px rgba(36, 48, 72, 0.4);
-    }
+  background: var(--accent);
+  color: #fffdf8;
+}
 
-    .btn-primary:hover {
-      background: #455572;
-    }
+.btn-primary:hover {
+  background: #595043;
+}
 
-    .btn-secondary {
-      background: var(--accent-soft-2);
-      color: #232a3b;
-    }
+.btn-secondary {
+  background: var(--accent-soft);
+  color: var(--text-main);
+}
 
-    .btn-secondary:hover {
-      background: var(--accent-soft);
-    }
+.btn-secondary:hover {
+  background: var(--accent-soft-2);
+}
 
     .btn-ghost {
       background: transparent;
@@ -251,17 +253,17 @@
     }
 
     .btn-ghost:hover {
-      background: rgba(120, 120, 135, 0.18);
+      background: rgba(203, 187, 161, 0.35);
     }
 
     .btn-danger {
-      background: rgba(180, 74, 85, 0.12);
+      background: rgba(155, 76, 76, 0.1);
       color: var(--danger);
       box-shadow: none;
     }
 
     .btn-danger:hover {
-      background: rgba(180, 74, 85, 0.2);
+      background: rgba(155, 76, 76, 0.2);
     }
 
     .pill {
@@ -271,8 +273,9 @@
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 999px;
-      background: var(--accent-soft-2);
-      color: #23232b;
+      background: rgba(216, 197, 165, 0.8);
+      color: #41372b;
+      border: 1px solid rgba(183, 165, 136, 0.9);
     }
 
     .pill span {
@@ -295,6 +298,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      border: 1px solid rgba(206, 190, 160, 0.9);
     }
 
     .summary-item strong {
@@ -302,11 +306,11 @@
     }
 
     .summary-item.positive strong {
-      color: #19693b;
+      color: #22693b;
     }
 
     .summary-item.negative strong {
-      color: #8b1f28;
+      color: #8b2a2a;
     }
 
     .filter-row {
@@ -332,8 +336,8 @@
       margin-bottom: 8px;
       padding: 6px 8px;
       border-radius: 8px;
-      background: #e0e1e7;
-      border: 1px solid #c1c3cf;
+      background: #efe4d0;
+      border: 1px solid #d2c1a7;
     }
 
     .backup-bar span {
@@ -348,13 +352,14 @@
       width: 14px;
       height: 14px;
       border-radius: 999px;
-      background: var(--accent-soft);
+      background: var(--accent-soft-2);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 9px;
-      color: #232a3b;
+      color: #4a4339;
       font-weight: 600;
+      border: 1px solid rgba(166, 149, 124, 0.8);
     }
 
     /* Tableau */
@@ -362,7 +367,7 @@
       margin-top: 6px;
       border-radius: 10px;
       border: 1px solid var(--border-soft);
-      background: #eeeff3;
+      background: #f0e4d3;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
@@ -376,7 +381,7 @@
     }
 
     thead {
-      background: #c6cad6;
+      background: #e0d4bf;
     }
 
     th, td {
@@ -387,8 +392,8 @@
 
     th {
       font-weight: 600;
-      color: #1f2430;
-      border-bottom: 1px solid rgba(90, 92, 106, 0.6);
+      color: #3d352a;
+      border-bottom: 1px solid rgba(141, 124, 99, 0.9);
       position: relative;
       user-select: none;
       white-space: nowrap;
@@ -428,7 +433,7 @@
     }
 
     td {
-      border-bottom: 1px solid rgba(120, 121, 135, 0.25);
+      border-bottom: 1px solid rgba(180, 164, 140, 0.55);
     }
 
     td.actions {
@@ -441,28 +446,28 @@
       padding: 2px 7px;
       border-radius: 999px;
       font-size: 11px;
-      background: rgba(120, 121, 135, 0.18);
-      color: #1f2430;
+      background: rgba(210, 190, 160, 0.6);
+      color: #3e3528;
     }
 
     .chip-type-montre {
-      background: rgba(84, 106, 143, 0.2);
-      color: #202739;
+      background: rgba(214, 196, 167, 0.9);
+      color: #3e3325;
     }
 
     .chip-type-poche {
-      background: rgba(36, 143, 168, 0.2);
-      color: #124252;
+      background: rgba(209, 196, 173, 0.9);
+      color: #3b3227;
     }
 
     .chip-type-horloge {
-      background: rgba(46, 125, 94, 0.22);
-      color: #123829;
+      background: rgba(202, 187, 158, 0.9);
+      color: #342b20;
     }
 
     .chip-type-officier {
-      background: rgba(176, 115, 52, 0.22);
-      color: #4c3014;
+      background: rgba(210, 182, 141, 0.9);
+      color: #3e2e18;
     }
 
     .muted {
@@ -480,7 +485,7 @@
       text-align: center;
       font-size: 13px;
       color: var(--text-muted);
-      background: #eeeff3;
+      background: #f4ead7;
     }
 
     footer {
@@ -608,7 +613,7 @@
         <div class="card-header">
           <div>
             <h2>Vue d’ensemble</h2>
-            <small>Tableau triable, couleurs sobres et zébrage.</small>
+            <small>Tableau triable, tons beige et zébrage.</small>
           </div>
           <div class="pill">
             📊 <span id="totalCountLabel">0</span> pièces
@@ -675,7 +680,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v1.5
+      © 2025 – Pierre Charlier – Collection de montres • v1.6
     </footer>
   </div>
 
@@ -693,10 +698,8 @@
       try {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          // Normalisation / migration des anciens formats
           collection = parsed.map((item, index) => {
             const base = typeof item === "object" && item !== null ? item : {};
-            // Migration ancienne date d'acquisition -> année
             let acquisitionYear = base.acquisitionYear;
             if (!acquisitionYear && base.acquisitionDate) {
               const yearFromDate = String(base.acquisitionDate).slice(0, 4);
@@ -815,7 +818,6 @@
         let av = a[key];
         let bv = b[key];
 
-        // Date (currentValueDate)
         if (key === "currentValueDate") {
           if (!av && !bv) return 0;
           if (!av) return -1 * multiplier;
@@ -823,14 +825,12 @@
           return (av < bv ? -1 : av > bv ? 1 : 0) * multiplier;
         }
 
-        // Booléen fullSet
         if (key === "fullSet") {
           const aVal = a.fullSet ? 1 : 0;
           const bVal = b.fullSet ? 1 : 0;
           return (aVal - bVal) * multiplier;
         }
 
-        // Numérique (années, prix, etc.)
         const aNum = Number(av);
         const bNum = Number(bv);
         const bothNumeric = !isNaN(aNum) && !isNaN(bNum) && av !== "" && bv !== "";
@@ -838,7 +838,6 @@
           return (aNum - bNum) * multiplier;
         }
 
-        // Texte
         av = (av || "").toString().toLowerCase();
         bv = (bv || "").toString().toLowerCase();
         if (av < bv) return -1 * multiplier;
@@ -919,17 +918,15 @@
         tdValDate.textContent = formatDate(item.currentValueDate);
         tr.appendChild(tdValDate);
 
-        // Full set (✔️ uniquement)
-const tdFullSet = document.createElement("td");
-tdFullSet.style.textAlign = "center";
-
-if (item.fullSet) {
-  tdFullSet.textContent = "✔️";
-} else {
-  tdFullSet.innerHTML = '<span class="muted">—</span>';
-}
-
-tr.appendChild(tdFullSet);
+        // Full set (✔️ ou —)
+        const tdFullSet = document.createElement("td");
+        tdFullSet.style.textAlign = "center";
+        if (item.fullSet) {
+          tdFullSet.textContent = "✔️";
+        } else {
+          tdFullSet.innerHTML = '<span class="muted">—</span>';
+        }
+        tr.appendChild(tdFullSet);
 
         // Notes
         const tdNotes = document.createElement("td");
