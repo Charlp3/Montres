@@ -6,22 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-  --bg-main: #e8dfd1;        /* beige soutenu */
-  --card-bg: #f6f1e7;        /* crème contrasté */
-  --accent: #6b6153;         /* brun-gris foncé (style Birthday) */
-  --accent-soft: #d1c5b7;    /* beige brun clair */
-  --accent-soft-2: #c7baaa;  /* beige grisé */
-  --text-main: #2c2a27;      /* gris-brun presque noir */
-  --text-muted: #6a645c;     /* gris-brun doux */
-  --danger: #944444;         /* rouge plus lisible */
-  --border-soft: #b7aa99;    /* brun clair contrasté */
-
-  --row-even: #f2ebe0;       /* zébrage clair */
-  --row-odd: #e0d5c6;        /* zébrage foncé */
-  --row-hover: #d6cabb;      /* survol plus visible */
-
-  --input-bg: #fdfbf8;       /* crème lisible */
-}
+      --bg-main: #e8dfd1;        /* beige soutenu */
+      --card-bg: #f6f1e7;        /* crème contrasté */
+      --accent: #6b6153;         /* brun-gris foncé (style Birthday) */
+      --accent-soft: #d1c5b7;    /* beige brun clair */
+      --accent-soft-2: #c7baaa;  /* beige grisé */
+      --text-main: #2c2a27;      /* gris-brun presque noir */
+      --text-muted: #6a645c;     /* gris-brun doux */
+      --danger: #944444;         /* rouge plus lisible */
+      --border-soft: #b7aa99;    /* brun clair contrasté */
+      --row-even: #f2ebe0;       /* zébrage clair */
+      --row-odd: #e0d5c6;        /* zébrage foncé */
+      --row-hover: #d6cabb;      /* survol plus visible */
+      --input-bg: #fdfbf8;       /* crème lisible */
+    }
 
     * { box-sizing: border-box; }
 
@@ -35,7 +33,7 @@
     h1, h2, h3 {
       margin: 0;
       font-weight: 600;
-      color: #3b372f;
+      color: #2f2b27;
     }
 
     a { color: var(--accent); text-decoration: none; }
@@ -228,22 +226,24 @@
     }
 
     .btn-primary {
-  background: var(--accent);
-  color: #fffdf8;
-}
+      background: var(--accent);
+      color: #fffdf8;
+      box-shadow: 0 4px 10px rgba(74, 64, 52, 0.35);
+    }
 
-.btn-primary:hover {
-  background: #595043;
-}
+    .btn-primary:hover {
+      background: #595043;
+    }
 
-.btn-secondary {
-  background: var(--accent-soft);
-  color: var(--text-main);
-}
+    .btn-secondary {
+      background: var(--accent-soft);
+      color: var(--text-main);
+      box-shadow: 0 2px 5px rgba(130, 120, 105, 0.22);
+    }
 
-.btn-secondary:hover {
-  background: var(--accent-soft-2);
-}
+    .btn-secondary:hover {
+      background: var(--accent-soft-2);
+    }
 
     .btn-ghost {
       background: transparent;
@@ -257,13 +257,13 @@
     }
 
     .btn-danger {
-      background: rgba(155, 76, 76, 0.1);
+      background: rgba(148, 68, 68, 0.1);
       color: var(--danger);
       box-shadow: none;
     }
 
     .btn-danger:hover {
-      background: rgba(155, 76, 76, 0.2);
+      background: rgba(148, 68, 68, 0.2);
     }
 
     .pill {
@@ -446,40 +446,40 @@
       padding: 2px 7px;
       border-radius: 999px;
       font-size: 11px;
-      background: rgba(210, 190, 160, 0.6);
+      background: rgba(210, 190, 160, 0.7);
       color: #3e3528;
+      border: 1px solid rgba(190, 170, 140, 0.9);
     }
 
     .chip-type-montre {
-      background: rgba(214, 196, 167, 0.9);
-      color: #3e3325;
+      background: #d9c9ac;
+      color: #3b3123;
+      border-color: #c2ae8c;
     }
 
     .chip-type-poche {
-  background: #bcdcff;        /* bleu pastel clair */
-  color: #1f3a5a;             /* texte bleu foncé */
-  border: 1px solid #7aa7d9;  /* contour bleu */
-}
+      background: #bcdcff;        /* bleu pastel clair */
+      color: #1f3a5a;             /* texte bleu foncé */
+      border: 1px solid #7aa7d9;  /* contour bleu */
     }
 
     .chip-type-horloge {
-  background: #b8e6b0;        /* vert pastel */
-  color: #2f4a2a;             /* texte vert foncé */
-  border: 1px solid #7fbf72;  /* contour vert */
-}
+      background: #b8e6b0;        /* vert pastel */
+      color: #2f4a2a;             /* texte vert foncé */
+      border: 1px solid #7fbf72;  /* contour vert */
     }
 
     .chip-type-officier {
-  background: #ffe28a;         /* jaune pastel */
-  color: #5a4a12;              /* texte brun foncé lisible */
-  border: 1px solid #d1b25a;   /* contour jaune foncé */
-}
+      background: #ffe28a;         /* jaune pastel */
+      color: #5a4a12;              /* texte brun foncé lisible */
+      border: 1px solid #d1b25a;   /* contour jaune foncé */
+    }
 
-.chip-type-autre {
-  background: rgba(255, 182, 193, 0.85); /* rose clair */
-  color: #4a2c34; /* texte prune foncé lisible */
-  border: 1px solid rgba(190, 120, 140, 0.9);
-}
+    .chip-type-autre {
+      background: rgba(255, 182, 193, 0.85); /* rose clair */
+      color: #4a2c34; /* texte prune foncé lisible */
+      border: 1px solid rgba(190, 120, 140, 0.9);
+    }
 
     .muted {
       color: var(--text-muted);
@@ -512,7 +512,7 @@
     <header class="app-header">
       <div class="app-title">
         <h1>Collection de montres</h1>
-        <small>Montres, montres de poche, horloges et pendules d’officier.</small>
+        <small>Montres, montres de poche, horloges et pendules de voyage.</small>
       </div>
       <div class="badge">
         ⏱️ Gestion perso
@@ -541,7 +541,7 @@
                 <option value="montre">Montre poignet</option>
                 <option value="montre_poche">Montre de poche</option>
                 <option value="horloge">Horloge</option>
-                <option value="pendule_officier">Pendule d’officier</option>
+                <option value="pendule_officier">Pendule voyage</option>
                 <option value="autre">Autre</option>
               </select>
             </div>
@@ -570,7 +570,7 @@
             </div>
             <div class="field">
               <label for="acquisitionYear">Année d’acquisition</label>
-              <input type="number" id="acquisitionYear" min="1800" max="2100" step="1" placeholder="2014" />
+              <input type="number" id="acquisitionYear" min="0" max="2100" step="1" placeholder="2014" />
             </div>
           </div>
 
@@ -658,7 +658,7 @@
             <option value="montre">Montre poignet</option>
             <option value="montre_poche">Montre de poche</option>
             <option value="horloge">Horloge</option>
-            <option value="pendule_officier">Pendule d’officier</option>
+            <option value="pendule_officier">Pendule voyage</option>
             <option value="autre">Autre</option>
           </select>
         </div>
@@ -680,7 +680,6 @@
               </tr>
             </thead>
             <tbody id="watchTableBody">
-              <!-- Lignes générées en JS -->
             </tbody>
           </table>
           <div class="no-data" id="noDataMsg">
@@ -691,7 +690,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v1.7
+      © 2025 – Pierre Charlier – Collection de montres • v1.8
     </footer>
   </div>
 
@@ -768,24 +767,28 @@
     }
 
     function typeLabel(type) {
-      switch (type) {
+      const t = String(type).toLowerCase();
+      switch (t) {
         case "montre": return "Montre";
         case "montre_poche": return "Montre de poche";
         case "horloge": return "Horloge";
-        case "pendule_officier": return "Pendule d’officier";
+        case "pendule_officier":
+        case "pendule_voyage":
+          return "Pendule voyage";
         case "autre": return "Autre";
         default: return type || "-";
       }
     }
 
     function typeChipClass(type) {
-      switch (type) {
-        case "montre": return "chip chip-type-montre";
-        case "montre_poche": return "chip chip-type-poche";
-        case "horloge": return "chip chip-type-horloge";
-        case "pendule_officier": return "chip chip-type-officier";
-        default: return "chip chip-type-autre";
-      }
+      const t = String(type).toLowerCase();
+      if (t === "montre") return "chip chip-type-montre";
+      if (t === "montre_poche") return "chip chip-type-poche";
+      if (t === "horloge") return "chip chip-type-horloge";
+      if (t === "pendule_officier" || t === "pendule_voyage")
+        return "chip chip-type-officier";
+      if (t === "autre") return "chip chip-type-autre";
+      return "chip";
     }
 
     function renderSummary() {
@@ -929,7 +932,7 @@
         tdValDate.textContent = formatDate(item.currentValueDate);
         tr.appendChild(tdValDate);
 
-        // Full set (✔️ ou —)
+        // Full set
         const tdFullSet = document.createElement("td");
         tdFullSet.style.textAlign = "center";
         if (item.fullSet) {
