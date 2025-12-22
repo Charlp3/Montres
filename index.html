@@ -349,18 +349,23 @@
     }
 
     .counter-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: var(--accent-soft-2);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      color: #4a4339;
-      font-weight: 600;
-      border: 1px solid rgba(166, 149, 124, 0.8);
-    }
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+
+  background: #ffffff;       /* fond blanc */
+  color: #000000;            /* chiffres noirs */
+  border: 2px solid #000000; /* contour noir */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
 
     /* Tableau */
     .table-container {
@@ -515,7 +520,7 @@
         <small>Montres, montres de poche, horloges et pendules de voyage.</small>
       </div>
       <div class="badge">
-        ⏱️ Gestion perso
+        ⏱️ Nombre
         <span class="counter-dot" id="totalCountDot">0</span>
       </div>
     </header>
@@ -690,7 +695,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v1.8
+      © 2025 – Pierre Charlier – Collection de montres • v1.9
     </footer>
   </div>
 
