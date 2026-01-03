@@ -695,7 +695,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v1.9
+      © 2025 – Pierre Charlier – Collection de montres • v2.0
     </footer>
   </div>
 
@@ -878,7 +878,28 @@
       );
       if (th) th.setAttribute("data-sort-dir", currentSort.dir);
     }
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
+function linkify(text) {
+  const safe = escapeHTML(text || "");
+  const urlRegex = /(\bhttps?:\/\/[^\s<]+)|(\bwww\.[^\s<]+)/gi;
+
+  return safe
+    .replace(urlRegex, (match) => {
+      const href = match.startsWith("www.")
+        ? `https://${match}`
+        : match;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+    })
+    .replace(/\n/g, "<br>");
+}
     function renderTable() {
       const tbody = document.getElementById("watchTableBody");
       const noDataMsg = document.getElementById("noDataMsg");
@@ -950,7 +971,7 @@
         // Notes
         const tdNotes = document.createElement("td");
         tdNotes.className = "notes-col";
-        tdNotes.textContent = item.notes || "";
+        tdNotes.innerHTML = linkify(item.notes || "");
         tr.appendChild(tdNotes);
 
         // Actions
