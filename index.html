@@ -1265,6 +1265,22 @@ document.addEventListener("DOMContentLoaded", () => {
       panel.style.display === "none" ? "block" : "none";
   });
 });
+// ===== Notes personnelles : sauvegarde persistante =====
+document.addEventListener("DOMContentLoaded", () => {
+  const notesArea = document.getElementById("freeNotes");
+  if (!notesArea) return;
+
+  // Chargement au démarrage
+  const savedNotes = localStorage.getItem("montres_free_notes");
+  if (savedNotes !== null) {
+    notesArea.value = savedNotes;
+  }
+
+  // Sauvegarde automatique
+  notesArea.addEventListener("input", () => {
+    localStorage.setItem("montres_free_notes", notesArea.value);
+  });
+});
   </script>
 <!-- ===== Notes personnelles ===== -->
 <div id="notesPanel" style="
