@@ -666,6 +666,9 @@
           <span>💾 Sauvegarde manuelle :</span>
           <button type="button" class="btn-secondary" id="exportBackupBtn">Exporter</button>
           <button type="button" class="btn-secondary" id="importBackupBtn">Importer</button>
+<button type="button"
+        class="btn-secondary"
+        id="notesBtn">📝 Notes</button>
           <input type="file" id="backupFileInput" accept="application/json" />
         </div>
 
@@ -708,7 +711,7 @@
     </div>
 
     <footer>
-      © 2025 – Pierre Charlier – Collection de montres • v2.1
+      © 2025 – Pierre Charlier – Collection de montres • v2.2
     </footer>
   </div>
 
@@ -1250,6 +1253,45 @@ function linkify(text) {
         .addEventListener("click", () => backupInput.click());
       backupInput.addEventListener("change", handleBackupFileSelected);
     });
+// ===== Notes personnelles : affichage =====
+document.addEventListener("DOMContentLoaded", () => {
+  const notesBtn = document.getElementById("notesBtn");
+  const panel = document.getElementById("notesPanel");
+
+  if (!notesBtn || !panel) return;
+
+  notesBtn.addEventListener("click", () => {
+    panel.style.display =
+      panel.style.display === "none" ? "block" : "none";
+  });
+});
   </script>
+<!-- ===== Notes personnelles ===== -->
+<div id="notesPanel" style="
+  display:none;
+  margin-top:16px;
+  padding:16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+">
+  <h2 style="margin-top:0;">📝 Notes personnelles</h2>
+
+  <textarea
+    id="freeNotes"
+    placeholder="Écrivez ici vos notes personnelles, indépendantes de la collection…"
+    style="
+      width:100%;
+      min-height:260px;
+      padding:12px;
+      font-size:15px;
+      line-height:1.4;
+      border-radius:8px;
+      border:1px solid var(--border-soft);
+      background: var(--input-bg);
+      color: var(--text-main);
+    "
+  ></textarea>
+</div>
 </body>
 </html>
